@@ -62,7 +62,7 @@ For more information, see the [course curriculum](https://nextjs.org/learn) on t
 - Next uses **automatic code-splitting**. Code is split by route segments so pages become isolated and not dependent to load on other pages. Different than React SPA where browser loads all app code on inital load.
 - Next prefetches the link routes in the background. Code for destination page already loaded in the background making routing page transitions near instant.
 
-- Showing active navigation links achieved by using usePathname() hook from **next/naviggation**.
+- Showing active navigation links achieved by using usePathname() hook from **next/navigation**.
 - The component that uses it must be a Client Component since it uses a hook.
 - Use example for how to use clxs and pathname to set active link styles from other links.
 
@@ -70,7 +70,7 @@ For more information, see the [course curriculum](https://nextjs.org/learn) on t
 
 - Next example uses **Vercel** for deployment and **PostgreSQL** for database (@vercel/postgres).
 - You can use whatever database you'd like though.
--
+
 - **Deploy project to Vercel**:
 
   - Create github repository for project code.
@@ -83,9 +83,45 @@ For more information, see the [course curriculum](https://nextjs.org/learn) on t
 
   - During this process you will copy secrets and paste them in the .env file (file should be in gitignore).
   - Install Vercel Postgres SDK by runnning `npm i @vercel/postgres`.
-  -
 
 - **Seed Database**:
+
   - The example for Next has a script to create and populate the database w/pre-created data.
   - The seed action is completed adding then running the seed script added to package.json.
   - Once the database is completed you can run SQL queries in Vercel interface.
+
+#### Fetching Data
+
+- Next allows you to create API endpoints using Route Handlers.
+- Database queries can be done w/relational database by using SQL or something like Prisma.
+- Write queries if you're creating API endpoints or using server components, you can query your database directly.
+
+- **Fetch Data using Server Components**
+
+  - Less expensive since fetching is happening on server side.
+  - Less dangerouse for the same reason.
+  - Can use async/await since server components support promises.
+  - No need for additional API layer since you are requesting the the server from the server side.
+
+- **Fetch Data using SQL**
+
+  - SQL is industry standard for relational databases.
+  - The NextJS example uses the Vercel Postgres SDK.
+  - Can use promise combinators like Promise.all() or Promise.allSettled() to get performance gains on multiple requests by doing requests in parallel rather than sequential (waterfall).
+
+#### Static and Dynamic Rendering
+
+**Static Rendering**:
+
+Static rendering is best for pages with no data or data that is shared across users (static blog or product page). Not recommended for dashboard type pages with personalized data that is regularly updated.
+
+- Data fetching and rendering happen on server side at build time (deployment), or revalidation.
+- Results can be stored in a CDN (Content Delivery Network).
+- When user visits your app, cached result is served.
+- Benefits:
+
+  - 1. Faster website
+  - 2. Reduced server load
+  - 3. Better SEO rankings.
+
+- **Dynamic Rendering**:
