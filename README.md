@@ -111,7 +111,7 @@ For more information, see the [course curriculum](https://nextjs.org/learn) on t
 
 #### Static and Dynamic Rendering
 
-**Static Rendering**:
+- **Static Rendering**:
 
 Static rendering is best for pages with no data or data that is shared across users (static blog or product page). Not recommended for dashboard type pages with personalized data that is regularly updated.
 
@@ -125,3 +125,57 @@ Static rendering is best for pages with no data or data that is shared across us
   - 3. Better SEO rankings.
 
 - **Dynamic Rendering**:
+
+Content is rendered on the server for each user at request time (when user visits the page).
+
+- Benefits:
+
+  - 1. Real time data
+  - 2. User specific content.
+  - 3. Request time information - like cookies, or URL search parameters
+
+- NextJS has an API called **unstable_noStore** in its **next/cache** module that can be used inside a Server Component or data fetching function to opt out of static rendering.
+- Suspense is used as a boundary between the static and dynamic parts of your route. (It doesn't doesn't itself make the component dynamic).
+- So by adding it at the top of a function, it will change the function to be dynamically rendered.
+- With dynamic rendering your app is only as good as your slowest data fetch.
+
+#### Streaming
+
+Streaming allows you to break down routes into smaller chunks and progressively stream them from the server to the client as they become ready.
+
+- **Ways to Implement Streaming**:
+
+1. At page level with loading.tsx file.
+2. For specific components with <Suspense>
+
+   - This is a special Next file built on top of Suspense.
+   - If the page it's on is static it will show immediately.
+   - You can interact with other elements of the page while it's showing.
+
+- **Adding Loading Skeletons**:
+
+Simplified version of the UI. Used as loading state.
+
+- **Route Groups**:
+
+Organize files into logical groups w/out affecting the URL path structure. The folder with parenthesis prevents that name from being included in URL path. So `/dashboard/(overview)/page.tsx` becomes `/dashboard`. Loading.tsx will only apply to the page in the route group.
+
+- **Streaming a component**:
+
+  - Wrap the component in the Suspense tag.
+  - Give it a fallback prop pointing to a skeleton component.
+  - Good for longest loading data component.
+
+- **Grouping a component**:
+
+  - For components you'd like to create a group stream for, create a wrapper component.
+  - Create a skeleton component for the wrapper.
+  - Wrap the wrapper component in Suspense element.
+  - Give that suspense a fallback component to the skeleton.
+  - Inside your component wrapper, fetch the data for each grouped item.
+
+#### Partial Prerendering(experimental feature)
+
+Static route shell is served and leaves holes for dynamic content that will load asynchronously. These async holes are streamed in parallel, reducing load time.
+
+#### Adding Search and Pagination
