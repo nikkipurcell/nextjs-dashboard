@@ -2,54 +2,85 @@
 
 This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
 
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+Tools:
+
+- [Training course curriculum](https://nextjs.org/learn) on the Next.js Website.
+- [Vercel dashboard](https://vercel.com/nikkis-projects-72ca6090/nextjs-dashboard/stores/postgres/store_jOYiNXw7iy2UOPtf/data) that uses Postgres database.
 
 ### Features of Next.js
 
 #### Create New NextJS Project
 
 - Use `create-next-app` to create new project.
-- The **app/lib** folder is where mock data, type definitions, functions and requests can live.
 - Written in TypeScript.
 - To install project packages, run `npm i`.
 - Start the development server on port 3000, run `npm run dev`.
+- This will open open http://localhost:3000/
+
+#### Repo Architecture
+
+- **config** files -> at root, webpack, babel, etc are abstracted away for simplicity
+- **public** folder -> image files
+- **scripts** folder -> any js scripts (like seeding postgres database)
+- **app** folder -> all react files
+- **app/page.tsx** -> home page associated with root at /.
+- **app/layout.tsx** -> contains html and body tags and imports global css file.
+- **app/ui** -> all CSS files, fonts and reusable components.
+- **app/lib** -> mock data, type definitions, functions and requests.
+- **app/myfirstroute** -> A nested route app/myfirstroute.
+- **app/myfirstroute/layout.tsx** -> Shared components for base route and any sub-routes.
+
+#### Next Modules
+
+- Some of the new modules in Next.js = next/font, next/image, next/link, next/navigation, next/cache
 
 #### CSS
 
 - CSS files contained in **app/ui** folder.
 - Global css file can be imported to top level component **app/layout.tsx**.
-- Can choose a CSS solution:
+- Can choose any CSS solution:
   - **Tailwind CSS** is default choice - framework where you write utility classes in your file.
   - **CSS Modules** is another option - scope CSS to component using unique class names.
   - **CSS-in-JS** is another option (styled-components, emotion, etc).
   - **SASS** is another option (.css and .scss files).
-- **clsx** is a library that lets you toggle class names that have different css styles.
+- **clsx** is a library that lets you toggle classnames that have different css styles.
 
-#### Font and Images
+#### Fonts
 
 - Use **next/font** module to automatically optimize fonts.
-  - How? - downloads at build time, hosts with other static assets.
+  - How? - font is downloaded at build time, hosts with other static assets.
   - Can use Google font - **next/font/google**
   - May have to specify a subset for google fonts.
 - Apply a font to the body tag in app/layout.tsx to have default base font for application.
 - Add antialiased to the body from Tailwind CSS (if using it).
 
+#### Images
+
 - Use **next/image** component to automatically optimize images.
-  - Static assets like images live in the **public** folder.
-  - Can use **<Image>** component from next/images and apply an src value to point to image.
+- How?
+
+  - Import Image component from next/image.
+  - Apply an src value to point to image in the public folder.
+    - _Static assets like images live in the **public** folder._
   - Apply width and height to avoid layout shift.
-  - Class hidden will remove image from DOM on mobile.
-  - md:block will show image on desktop screens.
+  - Use a classname as needed.
+
+- To toggle between a desktop image and a mobile image:
+  - Add desktop Image with className="hidden md:block":
+    - when you want to show desktop image and hide the mobile image.
+  - Add mobile Image with className="block md:hidden":
+    - when you want to show mobile image but hide the desktop image.
 
 #### Layouts and Pages
 
 - Next uses file-system routing where folders create the **nested routes**.
 - **page.tsx** is file that exports React component and required for route to be accessible.
-- app/page.tsx is the home page associated with the root page at /.
 
-- For dashboard pages in Next, layout.tsx page is a special file that is used to share UI between multiple pages.
-- The component in this file you create would be named Layout.
-- Inside you can use components you'd like to share on all child pages (example a SideNav).
+  - app/page.tsx is the home page associated with the root page at /.
+  - app/layout.tsx page is a special file that is used to share UI between multiple pages.
+    - The component in this file you create would be named Layout.
+    - Inside you can use components you'd like to share on all child pages (example a SideNav).
+
 - Layout components use partial rendering - only page components update, layout ones won't re-render.
   - So when you change navigation for child pages only the child sections of the page are rendered.
 - Root layout file is required. (any UI used will be shared with ALL pages of app).
@@ -101,7 +132,7 @@ For more information, see the [course curriculum](https://nextjs.org/learn) on t
   - Less expensive since fetching is happening on server side.
   - Less dangerouse for the same reason.
   - Can use async/await since server components support promises.
-  - No need for additional API layer since you are requesting the the server from the server side.
+  - No need for additional API layer since you are requesting the server from the server side.
 
 - **Fetch Data using SQL**
 
@@ -109,35 +140,39 @@ For more information, see the [course curriculum](https://nextjs.org/learn) on t
   - The NextJS example uses the Vercel Postgres SDK.
   - Can use promise combinators like Promise.all() or Promise.allSettled() to get performance gains on multiple requests by doing requests in parallel rather than sequential (waterfall).
 
-#### Static and Dynamic Rendering
-
-- **Static Rendering**:
+#### Static Rendering
 
 Static rendering is best for pages with no data or data that is shared across users (static blog or product page). Not recommended for dashboard type pages with personalized data that is regularly updated.
 
-- Data fetching and rendering happen on server side at build time (deployment), or revalidation.
-- Results can be stored in a CDN (Content Delivery Network).
-- When user visits your app, cached result is served.
-- Benefits:
+- What is it?:
 
-  - 1. Faster website
-  - 2. Reduced server load
-  - 3. Better SEO rankings.
-
-- **Dynamic Rendering**:
-
-Content is rendered on the server for each user at request time (when user visits the page).
+  - Data fetching and rendering happen on server side at build time (deployment), or revalidation.
+  - Results can be stored in a CDN (Content Delivery Network).
+  - When user visits your app, cached result is served.
 
 - Benefits:
 
-  - 1. Real time data
-  - 2. User specific content.
-  - 3. Request time information - like cookies, or URL search parameters
+  - Faster website
+  - Reduced server load
+  - Better SEO rankings.
 
-- NextJS has an API called **unstable_noStore** in its **next/cache** module that can be used inside a Server Component or data fetching function to opt out of static rendering.
-- Suspense is used as a boundary between the static and dynamic parts of your route. (It doesn't doesn't itself make the component dynamic).
-- So by adding it at the top of a function, it will change the function to be dynamically rendered.
-- With dynamic rendering your app is only as good as your slowest data fetch.
+#### Dynamic Rendering
+
+- What is it?:
+
+  - Content is rendered on the server for each user at request time (when user visits the page).
+  - With dynamic rendering your app is only as good as your slowest data fetch.
+
+- Benefits:
+
+  - Real time data
+  - User specific content.
+  - Request time information - like cookies, or URL search parameters
+
+- Differentiate between static and dynamic rendering:
+
+  - NextJS has an API called **unstable_noStore** in its **next/cache** module that can be used inside a Server Component or data fetching function to opt out of static rendering.
+  - Suspense is used as a boundary between the static and dynamic parts of your route. (It doesn't itself make the entire component dynamic, just the parts wrapped in Suspense).
 
 #### Streaming
 
@@ -145,20 +180,18 @@ Streaming allows you to break down routes into smaller chunks and progressively 
 
 - **Ways to Implement Streaming**:
 
-1. At page level with loading.tsx file.
-2. For specific components with <Suspense>
-
-   - This is a special Next file built on top of Suspense.
-   - If the page it's on is static it will show immediately.
-   - You can interact with other elements of the page while it's showing.
+  - At page level with loading.tsx file.
+    - This is a special Next file built on top of Suspense.
+  - For specific components with Suspense wrapper component.
 
 - **Adding Loading Skeletons**:
 
-Simplified version of the UI. Used as loading state.
+  - These are simplified version of the UI. Used as loading state.
 
 - **Route Groups**:
 
-Organize files into logical groups w/out affecting the URL path structure. The folder with parenthesis prevents that name from being included in URL path. So `/dashboard/(overview)/page.tsx` becomes `/dashboard`. Loading.tsx will only apply to the page in the route group.
+  - This is a way to apply loading state to a part of a route.
+  - Organize files into logical groups w/out affecting the URL path structure. The folder with parenthesis prevents that name from being included in URL path. So `/dashboard/(overview)/page.tsx` becomes `/dashboard`. Loading.tsx will only apply to the page in the route group.
 
 - **Streaming a component**:
 
