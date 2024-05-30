@@ -238,3 +238,32 @@ Implementation consists of:
 - **usePathname** and **useSearchParams** hooks to get current page and set new page.
 - **useSearchParams** in a function to set new page number and **pathName** to create URL string.
 - If user types new search string reset the page number to 1.
+
+#### Server Action
+
+**Server Actions** allow you to run asynchronous code directly on the server. Very safe!
+
+CREATE ITEM implementation:
+
+- Create a form to capture the user's input.
+- Create a Server Action and invoke it from the form.
+- Inside your Server Action, extract the data from the formData object.
+- Validate and prepare the data to be inserted into your database.
+- Insert the data and handle any errors.
+- Revalidate the cache and redirect the user back to invoices page.
+
+#### Dynamic Route Segments
+
+Create **Dynamic Route Segments** when you don't know the exact segment name and want to create routes based on data. Example href={`/dashboard/invoices/${id}/edit`}
+
+UPDATE ITEM implementation:
+
+- Create a new dynamic route segment with the invoice id.
+- Read the invoice id from the page params.
+- Fetch the specific invoice from your database.
+- Pre-populate the form with the invoice data.
+- Update the invoice data in your database.
+
+DELETE ITEM implementation:
+
+- To delete an invoice using a Server Action, wrap the delete button in a <form> element and pass the id to the Server Action using bind.
