@@ -211,4 +211,30 @@ Streaming allows you to break down routes into smaller chunks and progressively 
 
 Static route shell is served and leaves holes for dynamic content that will load asynchronously. These async holes are streamed in parallel, reducing load time.
 
-#### Adding Search and Pagination
+#### Adding Search
+
+To implement search using URL search params:
+
+- Capture users input.
+- Update URL w/seach params
+- Keep URL in sync with input field.
+- Update table to reflect the search query.
+
+To do this we use next.js client hooks:
+
+- **useSearchParams** - to access params of the current URL.
+- **usePathname** - lets you read the current URL's pathname.
+- **useRouter** - enables navigation between routes w/in client components.
+
+To optimize the search function requests we can use debouncing.
+**Debouncing** is a programming practice that limits the rate at which a function can fire.
+We use the module use-debounce in the project to limit the search to every 3 seconds.
+
+#### Adding Pagination
+
+Implementation consists of:
+
+- get total number of pages based on search query and pass to pagination component.
+- **usePathname** and **useSearchParams** hooks to get current page and set new page.
+- **useSearchParams** in a function to set new page number and **pathName** to create URL string.
+- If user types new search string reset the page number to 1.
