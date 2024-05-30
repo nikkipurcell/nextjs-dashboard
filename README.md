@@ -267,3 +267,9 @@ UPDATE ITEM implementation:
 DELETE ITEM implementation:
 
 - To delete an invoice using a Server Action, wrap the delete button in a <form> element and pass the id to the Server Action using bind.
+
+#### Error Handling
+
+- Can use try catch in Server Actions.
+- error.tsx file can be used to serve fallback error UI.
+- can create not-found.tsx file if want to specify 404 error. Will precede over error.tsx
