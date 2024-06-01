@@ -4,10 +4,14 @@ This is the starter template for the Next.js App Router Course. It contains the 
 
 ![Next.js Official Training Course](next-training.jpg)
 
-Tools:
+Tools used:
 
 - [Training course curriculum](https://nextjs.org/learn) on the Next.js Website.
-- [Vercel dashboard](https://vercel.com/nikkis-projects-72ca6090/nextjs-dashboard/stores/postgres/store_jOYiNXw7iy2UOPtf/data) that uses Postgres database.
+- Deployment: [Vercel](https://vercel.com/nikkis-projects-72ca6090/nextjs-dashboard/stores/postgres/store_jOYiNXw7iy2UOPtf/data)
+- Database: Postgres
+- Authentication: [NextAuth.js](https://authjs.dev/reference/nextjs)
+- CSS: Tailwind CSS
+- Validation: Zod
 
 ### Features of Next.js
 
@@ -243,7 +247,7 @@ Implementation consists of:
 
 #### Server Action
 
-**Server Actions** allow you to run asynchronous code directly on the server. Very safe!
+Server Actions allow you to run asynchronous code directly on the server. Very safe!
 
 CREATE ITEM implementation:
 
@@ -256,7 +260,7 @@ CREATE ITEM implementation:
 
 #### Dynamic Route Segments
 
-Create **Dynamic Route Segments** when you don't know the exact segment name and want to create routes based on data. Example href={`/dashboard/invoices/${id}/edit`}
+Create Dynamic Route Segments when you don't know the exact segment name and want to create routes based on data. Example href={`/dashboard/invoices/${id}/edit`}
 
 UPDATE ITEM implementation:
 
@@ -277,3 +281,14 @@ DELETE ITEM implementation:
 - can create not-found.tsx file if want to specify 404 error. Will precede over error.tsx
 
 #### Accessibility
+
+- Use next lint in package.json scripts with the included eslint-plugin-jsx-ally
+- Can add server side validation using Zod and updating server actions.
+- Can use React useFormState hook to handle form errors, and display to user.
+
+#### Authentication
+
+Authentication checks who you are, and authorization determines what you can do or access in the application.
+
+Email: user@nextmail.com
+Password: 123456
