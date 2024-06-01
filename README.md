@@ -272,6 +272,8 @@ DELETE ITEM implementation:
 
 #### Error Handling
 
-- Can use try catch in Server Actions.
+- Can use try catch in Server Actions to catch errors.
 - error.tsx file can be used to serve fallback error UI.
 - can create not-found.tsx file if want to specify 404 error. Will precede over error.tsx
+
+#### Accessibility
