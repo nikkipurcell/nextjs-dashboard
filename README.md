@@ -1,21 +1,30 @@
 ## Next.js App Router Course - Starter
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
+This is the Next.js App Router Course. It is from the Next.js learning section of the website. It introduces the featuers of Next.js in a beginner course (2024). This includes CSS, Fonts, Images, Layouts, Pages, Database, Fetching Data, Static and Dynamic Rendering, Streaming, Partial Prerendering, Search and Pagination, Mutating Data, Handling Errors, Improving Accessibility, Authentication and Metadata.
 
 ![Next.js Official Training Course](next-training.jpg)
 
-Tools used:
+### Project tools used:
 
-- [Training course curriculum](https://nextjs.org/learn) on the Next.js Website.
-- Deployment: [Vercel](https://vercel.com/nikkis-projects-72ca6090/nextjs-dashboard/stores/postgres/store_jOYiNXw7iy2UOPtf/data)
-- Database: Postgres
+- [Next.js Training Course](https://nextjs.org/learn) on the Next.js Website.
+- Language: TypeScript (.tsx files)
+- Type Definition: [Prisma](https://www.prisma.io/) (suggested)
+- CSS: [Tailwind](https://tailwindcss.com/), [clsx](https://www.npmjs.com/package/clsx) (toggle classnames)
+- Deployment: [Vercel](https://vercel.com/nikkis-projects-72ca6090/nextjs-dashboard)
+- Database: Postgres (setup on Vercel website above)
 - Authentication: [NextAuth.js](https://authjs.dev/reference/nextjs)
-- CSS: Tailwind CSS
-- Validation: Zod
+- Form Validation: [Zod](https://zod.dev/)
+- Local Hosting: http://localhost:3000/
 
-### Features of Next.js
+### Next.js Modules include:
 
-#### Create New NextJS Project
+- next/font,
+- next/image,
+- next/link,
+- next/navigation,
+- next/cache
+
+#### How To Create A New NextJS Project
 
 - Use `create-next-app` to create new project.
 - Written in TypeScript.
@@ -26,25 +35,46 @@ Tools used:
 #### Repo Architecture
 
 - **config** files -> at root, webpack, babel, etc are abstracted away for simplicity
-- **public** folder -> image files
-- **scripts** folder -> any js scripts (like seeding postgres database)
-- **app** folder -> all react files
+- **public** folder -> contains image files
+- **scripts** folder -> contains any js scripts (like seeding postgres database)
+- **app** folder -> contains all react files
 - **app/page.tsx** -> home page associated with root at /.
 - **app/layout.tsx** -> contains html and body tags and imports global css file.
-- **app/ui** -> all CSS files, fonts and reusable components.
-- **app/lib** -> mock data, type definitions, functions and requests.
+- **app/ui** -> contains all CSS files, fonts and reusable components.
+- **app/lib** -> contains mock data, type definitions, functions and requests.
 - **app/myfirstroute** -> A nested route app/myfirstroute.
 - **app/myfirstroute/layout.tsx** -> Shared components for base route and any sub-routes.
 
-#### Next Modules
+#### Placeholder Data
 
-- Some of the new modules in Next.js = next/font, next/image, next/link, next/navigation, next/cache
+Use placeholder data in JSON format or as JS objects:
+
+```
+const invoices = [
+  {
+    customer_id: customers[0].id,
+    amount: 15795,
+    status: 'pending',
+    date: '2022-12-06',
+  },
+  {
+    customer_id: customers[1].id,
+    amount: 20348,
+    status: 'pending',
+    date: '2022-11-14',
+  },
+  // ...
+];
+```
+
+### Next Training Topics:
 
 #### CSS
 
-- CSS files contained in **app/ui** folder.
-- Global css file can be imported to top level component **app/layout.tsx**.
-- Can choose any CSS solution:
+- Folder: **app/ui** - CSS files are contained here.
+- File: **global.css** -
+- File: **app/layout.tsx** - Global css can be imported to top level component in this file.
+- Choose any CSS solution:
   - **Tailwind CSS** is default choice - framework where you write utility classes in your file.
   - **CSS Modules** is another option - scope CSS to component using unique class names.
   - **CSS-in-JS** is another option (styled-components, emotion, etc).
@@ -53,78 +83,98 @@ Tools used:
 
 #### Fonts
 
-- Use **next/font** module to automatically optimize fonts.
-  - How? - font is downloaded at build time, hosts with other static assets.
-  - Can use Google font - **next/font/google**
-  - May have to specify a subset for google fonts.
+**next/font** module: optimizes fonts to help prevent layout shift.
+
+- Create file called **fonts.ts**
+- Can use Google font - **next/font/google**
+- May have to specify a subset for google fonts.
 - Apply a font to the body tag in app/layout.tsx to have default base font for application.
 - Add antialiased to the body from Tailwind CSS (if using it).
 
+- Benefits: Performance -> Fonts are downloaded at build time and hosted w/static assets.
+
 #### Images
 
-- Use **next/image** component to automatically optimize images.
-- How?
+**next/image** module: uses the Image component to optimize images.
 
-  - Import Image component from next/image.
-  - Apply an src value to point to image in the public folder.
-    - _Static assets like images live in the **public** folder._
-  - Apply width and height to avoid layout shift.
-  - Use a classname as needed.
+- Image component should have an src value pointing to image in the public folder.
+- Include width and height to prevent layout shift.
+- Use a classname as needed.
+- Include alt text for SEO.
 
-- To toggle between a desktop image and a mobile image:
-  - Add desktop Image with className="hidden md:block":
-    - when you want to show desktop image and hide the mobile image.
-  - Add mobile Image with className="block md:hidden":
-    - when you want to show mobile image but hide the desktop image.
+To toggle between a desktop image and a mobile image:
+
+- Add desktop Image with className="hidden md:block":
+  - when you want to show desktop image and hide the mobile image.
+- Add mobile Image with className="block md:hidden":
+
+  - when you want to show mobile image but hide the desktop image.
+
+- Benefits: Performance -> The module automatically optimizes images for responsiveness, devices, layout shift and lazy loading.
 
 #### Layouts and Pages
 
-- Next uses file-system routing where folders create the **nested routes**.
+Next uses file-system routing where folders create the **nested routes**.
+
 - **page.tsx** is file that exports React component and required for route to be accessible.
 
-  - app/page.tsx is the home page associated with the root page at /.
-  - app/layout.tsx page is a special file that is used to share UI between multiple pages.
-    - The component in this file you create would be named Layout.
-    - Inside you can use components you'd like to share on all child pages (example a SideNav).
+  - Ex: **app/page.tsx** is the home page associated with the root page at /.
 
-- Layout components use partial rendering - only page components update, layout ones won't re-render.
+- Layout file page is a special file that is used to share UI between multiple pages.
+
+  - Always located in the same root folder as a page.tsx.
+  - Root layout file **app/layout.tsx** is required. (any UI used will be shared with ALL pages of app).
+  - Root layout file contains html and body tags.
+  - Other layout files can use components you'd like to share on all child pages (example a SideNav).
+  - Layout components use partial rendering - only page components update, layout ones won't re-render.
   - So when you change navigation for child pages only the child sections of the page are rendered.
-- Root layout file is required. (any UI used will be shared with ALL pages of app).
-- Good if you need to add to the html or body tags.
+
+- Benefits: **PARTIAL RENDERING** -> Layouts allow so that on navigation, only page components update while layout won't re-render.
 
 #### Navigation
 
-- Navigation needs optimization so that the entire page doesn't re-render when you click anchor tag.
-- Use the **<Link>** component from **next/link**.
-- Next uses **automatic code-splitting**. Code is split by route segments so pages become isolated and not dependent to load on other pages. Different than React SPA where browser loads all app code on inital load.
-- Next prefetches the link routes in the background. Code for destination page already loaded in the background making routing page transitions near instant.
+**next/link** module: uses the Link component to optimize navigation.
 
-- Showing active navigation links achieved by using usePathname() hook from **next/navigation**.
-- The component that uses it must be a Client Component since it uses a hook.
-- Use example for how to use clxs and pathname to set active link styles from other links.
+- Add key, href, classname and children to Link component.
+
+- Benefits: Entire page won't re-render when you click anchor tag.
+  - **Automatic code-splitting** -> Code is split by route segments so pages become isolated and not dependent to load on other pages. _Different than React SPA where browser loads all app code on inital load_.
+  - **Prefetching** -> Next prefetches the link routes in the background. Code for destination page already loaded in the background making routing page transitions near instant.
+
+**next/navigation** modue: used to show active links using **usePathname()** hook.
+
+- Since it's a hook, component is required to be a client component.
+- **clxs** library can be used to conditionally apply class names for active links. _Using link.href and pathname_.
 
 #### Database
 
-- Next example uses **Vercel** for deployment and **PostgreSQL** for database (@vercel/postgres).
-- You can use whatever database you'd like though.
+Next example uses **Vercel** for deployment and **PostgreSQL** for database (@vercel/postgres). You can use whatever database you'd like though.
+
+- **Pre-requisites**:
+
+  - Create Github repo for your project.
+  - Create a Vercel account.
 
 - **Deploy project to Vercel**:
 
-  - Create github repository for project code.
-  - Create Vercel account.
-  - Connect repository and deploy project.
+  - Import the Github repo on Vercel website.
+  - Name your project.
+  - Click Deploy.
 
-- Vercel will automatically redeploy whenever you push changes to the main branch.
+Vercel will automatically redeploy whenever you push changes to the main branch.
 
 - **Create Postgres Database**:
 
-  - During this process you will copy secrets and paste them in the .env file (file should be in gitignore).
+  - Create, name and select region for your database.
+  - Copy secrets from .env.locals tab and paste them in .env.example file. Rename to .env.
+  - Go to .gitignore and and add .env to prevent secrets from being exposed in Github.
   - Install Vercel Postgres SDK by runnning `npm i @vercel/postgres`.
 
 - **Seed Database**:
 
   - The example for Next has a script to create and populate the database w/pre-created data.
-  - The seed action is completed adding then running the seed script added to package.json.
+  - Add the seed script to package.json so you can run it.
+  - Run `npm run seed`.
   - Once the database is completed you can run SQL queries in Vercel interface.
 
 #### Fetching Data
@@ -152,7 +202,7 @@ Static rendering is best for pages with no data or data that is shared across us
 
 - What is it?:
 
-  - Data fetching and rendering happen on server side at build time (deployment), or revalidation.
+  - Data fetching and rendering happen on server side at build time (deployment), or revalidation (purging data cache and re-fetching latest data).
   - Results can be stored in a CDN (Content Delivery Network).
   - When user visits your app, cached result is served.
 
@@ -182,31 +232,36 @@ Static rendering is best for pages with no data or data that is shared across us
 
 #### Streaming
 
-Streaming allows you to break down routes into smaller chunks and progressively stream them from the server to the client as they become ready.
+When parts of your application are dynamic, slow data fetches can affect performance. Streaming (data transfer technique) can help prevent slow data requests from blocking your whole page.
 
-- **Ways to Implement Streaming**:
+Streaming allows you to break down routes into smaller "chunks" and progressively stream them from the server to the client as they become ready.
 
-  - At page level with loading.tsx file.
-    - This is a special Next file built on top of Suspense.
-  - For specific components with Suspense wrapper component.
+- **Two Ways to Implement Streaming**:
 
-- **Adding Loading Skeletons**:
+  - At page level with **loading.tsx** file.
+  - For specific components with the **Suspense** wrapper component.
 
-  - These are simplified version of the UI. Used as loading state.
+Streaming a whole page with loading.tsx:
+
+- A special file built on top of Suspense that allows you to create fallback UI to show as replacement while page content loads.
+- Any static content will load immediately while dynamic content loads.
+- Improve the UI experience by using Loading Skeletons. These are simplified version of the UI used as loading state.
+- Loading skeleton will apply to sub route pages. To prevent that use route groups.
 
 - **Route Groups**:
 
-  - This is a way to apply loading state to a part of a route.
+  - This is a way to apply loading state to a part of a route rather than the whole page.
   - Organize files into logical groups w/out affecting the URL path structure. The folder with parenthesis prevents that name from being included in URL path. So `/dashboard/(overview)/page.tsx` becomes `/dashboard`. Loading.tsx will only apply to the page in the route group.
 
-- **Streaming a component**:
+Streaming a component:
 
-  - Wrap the component in the Suspense tag.
-  - Give it a fallback prop pointing to a skeleton component.
-  - Good for longest loading data component.
+- Wrap the component in the Suspense tag.
+- Give it a fallback prop pointing to a skeleton component.
+- Good for longest loading data component.
 
 - **Grouping a component**:
 
+  - Good pattern for when you want multiple components to load in at the same time.
   - For components you'd like to create a group stream for, create a wrapper component.
   - Create a skeleton component for the wrapper.
   - Wrap the wrapper component in Suspense element.
