@@ -345,5 +345,3 @@ DELETE ITEM implementation:
 
 Authentication checks who you are, and authorization determines what you can do or access in the application.
 
-Email: user@nextmail.com
-Password: 123456
